@@ -90,7 +90,7 @@
 				"description": "Use Managed or Unmanaged Disks"
 			}
 		},
-		"genericClusterPrefix": {
+		"appClusterPrefix": {
 			"type": "string",
 			"defaultValue": "mycluster",
 			"minLength": 2,
