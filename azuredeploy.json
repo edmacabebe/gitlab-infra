@@ -1011,27 +1011,6 @@
 					"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('clusterMasterHostname'), '-nsg'))]"
 				}
 			}
-		},
-			"dependsOn": [
-				"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-			],
-			"properties": {
-				"ipConfigurations": [{
-					"name": "[concat(variables('clusterInfraHostname'), copyIndex(), 'ipconfig')]",
-					"properties": {
-						"privateIPAllocationMethod": "Dynamic",
-						"subnet": {
-							"id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'), '/subnets/', variables('masterSubnetName'))]"
-						},
-						"loadBalancerBackendAddressPools": [{
-							"id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Network/loadBalancers/', variables('infraLoadBalancerName'), '/backendAddressPools/loadBalancerBackEnd')]"
-						}]
-					}
-				}],
-				"networkSecurityGroup": {
-					"id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('clusterInfraHostname'), '-nsg'))]"
-				}
-			}
 		}, {
 			"type": "Microsoft.Network/networkInterfaces",
 			"name": "[concat(variables('clusterNodeHostname'), '-', copyIndex(), '-nic')]",
@@ -1128,88 +1107,6 @@
 					},
 					"newStorageAccountData": {
 						"value": "[variables('newStorageAccountMaster')]"
-					},
-					"diagStorageAccount": {
-						"value": "[variables('diagStorageAccount1')]"
-					},
-					"apiVersionStorage": {
-						"value": "[variables('apiVersionStorage')]"
-					},
-					"apiVersionCompute": {
-						"value": "[variables('apiVersionCompute')]"
-					},
-					"imageReference": {
-						"value": "[variables('imageReference')]"
-					},
-					"appTags": {
-						"value": "[variables('appTags')]"
-					}
-				}
-			}
-		}, {
-			"name": "[concat('infraVmDeployment', copyindex())]",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "[variables('apiVersionLinkTemplate')]",
-			"dependsOn": [
-				"[resourceId('Microsoft.Storage/storageAccounts', variables('diagStorageAccount1'))]",
-				"infraNicLoop",
-				"infraavailabilityset"
-			],
-			"copy": {
-				"name": "infraVmLoop",
-				"count": "[parameters('infraInstanceCount')]"
-			},
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('clusterNodeDeploymentTemplateUrl')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"location": {
-						"value": "[variables('location')]"
-					},
-					"sshKeyPath": {
-						"value": "[variables('sshKeyPath')]"
-					},
-					"sshPublicKey": {
-						"value": "[parameters('sshPublicKey')]"
-					},
-					"dataDiskSize": {
-						"value": "[parameters('dataDiskSize')]"
-					},
-					"adminUsername": {
-						"value": "[parameters('adminUsername')]"
-					},
-					"vmSize": {
-						"value": "[parameters('infraVmSize')]"
-					},
-					"availabilitySet": {
-						"value": "infraavailabilityset"
-					},
-					"hostname": {
-						"value": "[concat(variables('clusterInfraHostname'), '-', copyIndex())]"
-					},
-					"unmanagedOsDiskUri": {
-						"value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables(variables('infraUri'))), variables('apiVersionStorage')).primaryEndpoints['blob']]"
-					},
-					"unmanagedDataDiskUri": {
-						"value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', variables(variables('infraUri'))), variables('apiVersionStorage')).primaryEndpoints['blob']]"
-					},
-					"role": {
-						"value": "infranode"
-					},
-					"vmStorageType": {
-						"value": "[variables('vmSizesMap')[parameters('infraVmSize')].storageAccountType]"
-					},
-					"storageKind": {
-						"value": "[parameters('storageKind')]"
-					},
-					"newStorageAccountOs": {
-						"value": "[variables('newStorageAccountInfra')]"
-					},
-					"newStorageAccountData": {
-						"value": "[variables('newStorageAccountInfra')]"
 					},
 					"diagStorageAccount": {
 						"value": "[variables('diagStorageAccount1')]"

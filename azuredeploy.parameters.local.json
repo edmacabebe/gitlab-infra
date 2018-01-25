@@ -32,7 +32,7 @@
 		"adminUsername": {
 			"value": "admin"
 		},
-		"openshiftPassword": {
+		"clusterPassword": {
 			"value": "asdfgh"
 		},
 		"sshPublicKey": {
