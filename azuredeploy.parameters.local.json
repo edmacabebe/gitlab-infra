@@ -14,8 +14,8 @@
 		"nodeVmSize": {
 			"value": "Standard_DS3_v2"
 		},
-		"openshiftClusterPrefix": {
-			"value": "banking-0"
+		"appClusterPrefix": {
+			"value": "GitlabEE"
 		},
 		"masterInstanceCount": {
 			"value": 1
@@ -30,7 +30,7 @@
 			"value": 128
 		},
 		"adminUsername": {
-			"value": "clusteradmin"
+			"value": "admin"
 		},
 		"openshiftPassword": {
 			"value": "asdfgh"
@@ -39,16 +39,16 @@
 			"value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDEnPrfZNXXKbUEVpXb272mUmuNO+4ZJK3dKecB9LNurxkBLD4nMti8ZvjWDAuvYj98Z4w/m54ol1Xvc9jqwpb2JdFd5o3Ab4ciPmAd7uRBrUr63xs0/9T1/6p1sVZWa2LBbsSXnOfbNOY+Vne5Ysro+VlpAAOuwm8VQfvBsJBDQ2Q04fMu5K6Q3QEnwuCm7XJvKh1x5CAL7D4OOmDJOXVTZmLLIP0YZHaMEGXNjeq/jUpSASFLjDjmzOggmfbeb7MfpYhV9gghGSwr2Mj9b1+HVaSBLazSbl8vvHQudk+T+8mjdyW8SI23gkwOdV+Kc1tOnC+pQJsozp7hpV83VOrL edisonmacabebe@Edisons-MacBook-Pro.local"
 		},
 		"keyVaultResourceGroup": {
-			"value": "INGAsiaGitlabX"
+			"value": "INGAsiaGitLabX"
 		},
 		"keyVaultName": {
-			"value": "INGAsiaGitlabX-kv"
+			"value": "INGAsiaGitLabX-kv"
 		},
 		"keyVaultSecret": {
-			"value": "INGAsiaGitlabX-secret"
+			"value": "INGAsiaGitLabX-secret"
 		},
 		"aadClientId": {
-			"value": "d8408c65-ca81-4e92-b15e-9a83ebc87759"
+			"value": "2bd3a1c0-a255-4132-968b-f59cf99d9b30"
 		},
 		"aadClientSecret": {
 			"value": "Pass@word1"

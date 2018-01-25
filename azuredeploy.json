@@ -354,7 +354,7 @@
 			"version": "latest"
 		},
 		"appTags": {
-			"app": "GitLab-EE",
+			"app": "GitLabEE",
 			"provider": "9d2c71fc-96ba-4b4a-93b3-14def5bc96fc"
 		},
 		"singlequote": "'",
@@ -686,8 +686,8 @@
 			"location": "[variables('location')]",
 			"tags": {
 				"displayName": "MasterNSG",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"properties": {
 				"securityRules": [{
@@ -738,8 +738,8 @@
 			"location": "[variables('location')]",
 			"tags": {
 				"displayName": "NodeNSG",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"properties": {
 				"securityRules": [{
@@ -789,8 +789,8 @@
 			"location": "[variables('location')]",
 			"tags": {
 				"displayName": "VirtualNetwork",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"properties": {
@@ -819,8 +819,8 @@
 			"apiVersion": "[variables('apiVersionStorage')]",
 			"tags": {
 				"displayName": "[variables('newStorageAccountArray')[copyIndex()].tagName]",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"copy": {
 				"name": "storageLoop",
@@ -837,8 +837,8 @@
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"tags": {
 				"displayName": "ClusterMasterPublicIP",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"properties": {
 				"publicIPAllocationMethod": "Static",
@@ -860,8 +860,8 @@
 			},
 			"tags": {
 				"displayName": "[variables('availabilitySetArray')[copyIndex()].tagName]",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"copy": {
 				"name": "availabiltySetLoop",
@@ -874,8 +874,8 @@
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"tags": {
 				"displayName": "clusterMasterLB",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"dependsOn": [
 				"[concat('Microsoft.Network/publicIPAddresses/', variables('clusterMasterPublicIpDnsLabel'))]"
@@ -976,8 +976,8 @@
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"tags": {
 				"displayName": "ClusterMasterNetworkInterface",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"dependsOn": [
 				"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
@@ -1039,8 +1039,8 @@
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"tags": {
 				"displayName": "ClusterNodeNetworkInterfaces",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"dependsOn": [
 				"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
@@ -1141,8 +1141,8 @@
 					"imageReference": {
 						"value": "[variables('imageReference')]"
 					},
-					"gitlabTags": {
-						"value": "[variables('gitlabTags')]"
+					"appTags": {
+						"value": "[variables('appTags')]"
 					}
 				}
 			}
@@ -1223,8 +1223,8 @@
 					"imageReference": {
 						"value": "[variables('imageReference')]"
 					},
-					"gitlabTags": {
-						"value": "[variables('gitlabTags')]"
+					"appTags": {
+						"value": "[variables('appTags')]"
 					}
 				}
 			}
@@ -1305,8 +1305,8 @@
 					"imageReference": {
 						"value": "[variables('imageReference')]"
 					},
-					"gitlabTags": {
-						"value": "[variables('gitlabTags')]"
+					"appTags": {
+						"value": "[variables('appTags')]"
 					}
 				}
 			}
@@ -1317,8 +1317,8 @@
 			"apiVersion": "[variables('apiVersionCompute')]",
 			"tags": {
 				"displayName": "PrepMaster",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"dependsOn": [
 				"[concat('masterVmDeployment', copyindex())]"
@@ -1348,8 +1348,8 @@
 			"apiVersion": "[variables('apiVersionCompute')]",
 			"tags": {
 				"displayName": "PrepNodes",
-				"provider": "[variables('gitlabTags').provider]",
-				"app": "[variables('gitlabTags').app]"
+				"provider": "[variables('appTags').provider]",
+				"app": "[variables('appTags').app]"
 			},
 			"dependsOn": [
 				"[concat('nodeVmDeployment', copyindex())]"
@@ -1466,8 +1466,8 @@
 					"subDomainChosen": {
 						"value": "[concat(parameters('defaultSubDomainType'), 'Domain')]"
 					},
-					"gitlabTags": {
-						"value": "[variables('gitlabTags')]"
+					"appTags": {
+						"value": "[variables('appTags')]"
 					},
 					"sshPrivateKey": {
 						"reference": {

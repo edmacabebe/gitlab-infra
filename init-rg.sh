@@ -16,3 +16,4 @@ then
 fi
 
 az ad sp create-for-rbac -n $RG-cloudprovider --password Pass@word1 --role contributor --scopes $SUB
+#az group deployment create --resource-group INGAsiaGitLabX --template-file azuredeploy.json --parameters @azuredeploy.parameters.local.json --no-wait
