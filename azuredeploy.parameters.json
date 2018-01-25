@@ -1,27 +1,78 @@
 {
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "adminUsername": {
-      "value": ""
-    },
-    "adminPassword": {
-      "value": ""
-    },
-    "aadClientID": {
-      "value": ""
-    },
-    "aadClientSecret": {
-      "value": ""
-    },
-    "keyVaultResourceGroup": {
-      "value": ""
-    },
-    "keyVaultName": {
-      "value": ""
-    },
-    "vmName": {
-      "value": ""
-    }
-  }
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"_artifactsLocation": {
+			"value": "https://raw.githubusercontent.com/edmacabebe/gitlab-infra/master/"
+		},
+		"masterVmSize": {
+			"value": "Standard_DS2_v2"
+		},
+		"infraVmSize": {
+			"value": "Standard_DS2_v2"
+		},
+		"nodeVmSize": {
+			"value": "Standard_DS2_v2"
+		},
+		"storageKind": {
+			"value": "changeme"
+		},
+		"openshiftClusterPrefix": {
+			"value": "changeme"
+		},
+		"masterInstanceCount": {
+			"value": 3
+		},
+		"infraInstanceCount": {
+			"value": 2
+		},
+		"nodeInstanceCount": {
+			"value": 1
+		},
+		"dataDiskSize": {
+			"value": 128
+		},
+		"adminUsername": {
+			"value": "changeme"
+		},
+		"openshiftPassword": {
+			"value": "changeme"
+		},
+		"enableMetrics": {
+			"value": "false"
+		},
+		"enableLogging": {
+			"value": "false"
+		},
+		"enableCockpit": {
+			"value": "false"
+		},
+		"sshPublicKey": {
+			"value": "changeme"
+		},
+		"keyVaultResourceGroup": {
+			"value": "changeme"
+		},
+		"keyVaultName": {
+			"value": "changeme"
+		},
+		"keyVaultSecret": {
+			"value": "changeme"
+		},
+		"enableAzure": {
+			"value": "false"
+		},
+		"aadClientId": {
+			"value": "changeme"
+		},
+		"aadClientSecret": {
+			"value": "changeme"
+		},
+		"defaultSubDomainType": {
+			"value": "nipio"
+		},
+		"defaultSubDomain": {
+			"value": "changeme"
+		}
+	}
 }
