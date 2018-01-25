@@ -244,7 +244,7 @@ cat > /home/${SUDOUSER}/setup-azure-master.yml <<EOF
           "tenantId": "{{ lookup('env','TENANTID') }}",
           "resourceGroup": "{{ lookup('env','RESOURCEGROUP') }}",
           "location": "{{ lookup('env','LOCATION') }}"
-        } 
+        }
     notify:
     - restart origin-master-api
     - restart origin-master-controllers
@@ -310,7 +310,7 @@ cat > /home/${SUDOUSER}/setup-azure-node-master.yml <<EOF
           "tenantId": "{{ lookup('env','TENANTID') }}",
           "resourceGroup": "{{ lookup('env','RESOURCEGROUP') }}",
           "location": "{{ lookup('env','LOCATION') }}"
-        } 
+        }
     notify:
     - restart origin-node
   - name: insert the azure disk config into the node
@@ -365,7 +365,7 @@ cat > /home/${SUDOUSER}/setup-azure-node.yml <<EOF
           "tenantId": "{{ lookup('env','TENANTID') }}",
           "resourceGroup": "{{ lookup('env','RESOURCEGROUP') }}",
           "location": "{{ lookup('env','LOCATION') }}"
-        } 
+        }
     notify:
     - restart origin-node
   - name: insert the azure disk config into the node
@@ -534,7 +534,7 @@ runuser -l $SUDOUSER -c "ansible all -b -m service -a \"name=NetworkManager stat
 # Initiating installation of OpenShift Container Platform using Ansible Playbook
 echo $(date) " - Installing OpenShift Container Platform via Ansible Playbook"
 
-runuser -l $SUDOUSER -c "ansible-playbook openshift-ansible/playbooks/byo/config.yml"
+#runuser -l $SUDOUSER -c "ansible-playbook openshift-ansible/playbooks/byo/config.yml"
 
 echo $(date) " - Modifying sudoers"
 
@@ -593,9 +593,9 @@ then
 	   echo $(date) "- Cloud Provider setup of master config on Master Nodes failed to completed"
 	   exit 7
 	fi
-	
+
 	echo $(date) "- Sleep for 60"
-	
+
 	sleep 60
 	runuser $SUDOUSER -c "ansible-playbook ~/setup-azure-node-master.yml"
 
@@ -606,9 +606,9 @@ then
 	   echo $(date) "- Cloud Provider setup of node config on Master Nodes failed to completed"
 	   exit 8
 	fi
-	
+
 	echo $(date) "- Sleep for 60"
-	
+
 	sleep 60
 	runuser $SUDOUSER -c "ansible-playbook ~/setup-azure-node.yml"
 
@@ -619,9 +619,9 @@ then
 	   echo $(date) "- Cloud Provider setup of node config on App Nodes failed to completed"
 	   exit 9
 	fi
-	
+
 	echo $(date) "- Sleep for 120"
-	
+
 	sleep 120
 	runuser $SUDOUSER -c "ansible-playbook ~/masternonschedulable.yml"
 
@@ -634,10 +634,10 @@ then
 	fi
 
 	echo $(date) "- Restarting OVS to complete installation"
-	
+
 	echo $(date) "- Sleep for 20"
-	
-	sleep 20	
+
+	sleep 20
 	runuser -l $SUDOUSER -c  "oc label nodes --all logging-infra-fluentd=true logging=true"
 
 	runuser -l $SUDOUSER -c  "ansible all -b  -m service -a 'name=openvswitch state=restarted' "
@@ -657,9 +657,11 @@ then
 	echo $(date) "- Deploying Metrics"
 	if [ $AZURE == "true" ]
 	then
-		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True -e openshift_metrics_cassandra_storage_type=dynamic"
+		#runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True -e openshift_metrics_cassandra_storage_type=dynamic"
+    echo "skipping metrics deployment"
 	else
-		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True"
+		#runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True"
+    echo "skipping metrics deployment"
 	fi
 	if [ $? -eq 0 ]
 	then
@@ -672,15 +674,17 @@ fi
 
 # Configure Logging
 
-if [ $LOGGING == "true" ] 
+if [ $LOGGING == "true" ]
 then
 	sleep 60
 	echo $(date) "- Deploying Logging"
 	if [ $AZURE == "true" ]
 	then
-		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml -e openshift_logging_install_logging=True -e openshift_logging_es_pvc_dynamic=true"
+		#runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml -e openshift_logging_install_logging=True -e openshift_logging_es_pvc_dynamic=true"
+    echo "skipping logging deployment"
 	else
-		runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml -e openshift_logging_install_logging=True"
+		#runuser -l $SUDOUSER -c "ansible-playbook /home/$SUDOUSER/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml -e openshift_logging_install_logging=True"
+    echo "skipping logging deployment"
 	fi
 	if [ $? -eq 0 ]
 	then
@@ -694,14 +698,14 @@ fi
 echo $(date) "- Deleting post installation files"
 
 
-rm /home/${SUDOUSER}/addocpuser.yml
-rm /home/${SUDOUSER}/assignclusteradminrights.yml
-rm /home/${SUDOUSER}/dockerregistry.yml
-rm /home/${SUDOUSER}/assignrootpassword.yml
-rm /home/${SUDOUSER}/setup-azure-master.yml
-rm /home/${SUDOUSER}/setup-azure-node-master.yml
-rm /home/${SUDOUSER}/setup-azure-node.yml
-rm /home/${SUDOUSER}/masternonschedulable.yml
-rm /home/${SUDOUSER}/reboot-nodes.yml
+#rm /home/${SUDOUSER}/addocpuser.yml
+#rm /home/${SUDOUSER}/assignclusteradminrights.yml
+#rm /home/${SUDOUSER}/dockerregistry.yml
+#rm /home/${SUDOUSER}/assignrootpassword.yml
+#rm /home/${SUDOUSER}/setup-azure-master.yml
+#rm /home/${SUDOUSER}/setup-azure-node-master.yml
+#rm /home/${SUDOUSER}/setup-azure-node.yml
+#rm /home/${SUDOUSER}/masternonschedulable.yml
+#rm /home/${SUDOUSER}/reboot-nodes.yml
 
 echo $(date) " - Script complete"

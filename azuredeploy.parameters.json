@@ -23,9 +23,6 @@
 		"masterInstanceCount": {
 			"value": 3
 		},
-		"infraInstanceCount": {
-			"value": 2
-		},
 		"nodeInstanceCount": {
 			"value": 1
 		},
@@ -35,17 +32,8 @@
 		"adminUsername": {
 			"value": "changeme"
 		},
-		"openshiftPassword": {
+		"clusterPassword": {
 			"value": "changeme"
-		},
-		"enableMetrics": {
-			"value": "false"
-		},
-		"enableLogging": {
-			"value": "false"
-		},
-		"enableCockpit": {
-			"value": "false"
 		},
 		"sshPublicKey": {
 			"value": "changeme"

@@ -58,30 +58,6 @@
 				"description": "Cluster Node VM(s) size"
 			}
 		},
-		"infraVmSize": {
-			"type": "string",
-			"defaultValue": "Standard_DS3_v2",
-			"allowedValues": [
-				"Standard_A4", "Standard_A5", "Standard_A6", "Standard_A7", "Standard_A8", "Standard_A9", "Standard_A10", "Standard_A11",
-				"Standard_D1", "Standard_D2", "Standard_D3", "Standard_D4",
-				"Standard_D11", "Standard_D12", "Standard_D13", "Standard_D14",
-				"Standard_D1_v2", "Standard_D2_v2", "Standard_D3_v2", "Standard_D4_v2", "Standard_D5_v2",
-				"Standard_D11_v2", "Standard_D12_v2", "Standard_D13_v2", "Standard_D14_v2",
-				"Standard_G1", "Standard_G2", "Standard_G3", "Standard_G4", "Standard_G5",
-				"Standard_D1_v2", "Standard_DS2", "Standard_DS3", "Standard_DS4",
-				"Standard_DS11", "Standard_DS12", "Standard_DS13", "Standard_DS14",
-				"Standard_DS1_v2", "Standard_DS2_v2", "Standard_DS3_v2", "Standard_DS4_v2", "Standard_DS5_v2",
-				"Standard_DS11_v2", "Standard_DS12_v2", "Standard_DS13_v2", "Standard_DS14_v2",
-				"Standard_GS1", "Standard_GS2", "Standard_GS3", "Standard_GS4", "Standard_GS5",
-				"Standard_D2_v3", "Standard_D4_v3", "Standard_D8_v3", "Standard_D16_v3", "Standard_D32_v3", "Standard_D64_v3",
-				"Standard_D2s_v3", "Standard_D4s_v3", "Standard_D8s_v3", "Standard_D16s_v3", "Standard_D32s_v3", "Standard_D64s_v3",
-				"Standard_E2_v3", "Standard_E4_v3", "Standard_E8_v3", "Standard_E16_v3", "Standard_E32_v3", "Standard_E64_v3",
-				"Standard_E2s_v3", "Standard_E4s_v3", "Standard_E8s_v3", "Standard_E16s_v3", "Standard_E32s_v3", "Standard_E64s_v3"
-			],
-			"metadata": {
-				"description": "Cluster Infra Node VM(s) size"
-			}
-		},
 		"storageKind": {
 			"type": "string",
 			"defaultValue": "managed",
@@ -105,14 +81,6 @@
 			"allowedValues": [1, 3, 5],
 			"metadata": {
 				"description": "Number of Cluster masters."
-			}
-		},
-		"infraInstanceCount": {
-			"type": "int",
-			"defaultValue": 0,
-			"allowedValues": [0, 1, 2, 3],
-			"metadata": {
-				"description": "Number of Cluster infra nodes."
 			}
 		},
 		"nodeInstanceCount": {
@@ -152,36 +120,6 @@
 			"type": "string",
 			"metadata": {
 				"description": "SSH public key for all VMs"
-			}
-		},
-		"enableMetrics": {
-			"type": "string",
-			"defaultValue": "false",
-			"allowedValues": [
-				"true", "false"
-			],
-			"metadata": {
-				"description": "Enable App Metrics: true or false"
-			}
-		},
-		"enableLogging": {
-			"type": "string",
-			"defaultValue": "false",
-			"allowedValues": [
-				"true", "false"
-			],
-			"metadata": {
-				"description": "Enable App Logging: true or false"
-			}
-		},
-		"enableCockpit": {
-			"type": "string",
-			"defaultValue": "false",
-			"allowedValues": [
-				"true", "false"
-			],
-			"metadata": {
-				"description": "Enable Cockpit: true or false"
 			}
 		},
 		"keyVaultResourceGroup": {
@@ -340,10 +278,6 @@
 			"offer": "CentOS",
 			"sku": "7.4",
 			"version": "latest"
-		},
-		"appTags": {
-			"app": "GitLabEE",
-			"provider": "9d2c71fc-96ba-4b4a-93b3-14def5bc96fc"
 		},
 		"singlequote": "'",
 		"sshKeyPath": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
@@ -674,8 +608,6 @@
 			"location": "[variables('location')]",
 			"tags": {
 				"displayName": "MasterNSG",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
 			},
 			"properties": {
 				"securityRules": [{
@@ -726,8 +658,6 @@
 			"location": "[variables('location')]",
 			"tags": {
 				"displayName": "NodeNSG",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
 			},
 			"properties": {
 				"securityRules": [{
@@ -777,8 +707,6 @@
 			"location": "[variables('location')]",
 			"tags": {
 				"displayName": "VirtualNetwork",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
 			},
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"properties": {
@@ -807,8 +735,6 @@
 			"apiVersion": "[variables('apiVersionStorage')]",
 			"tags": {
 				"displayName": "[variables('newStorageAccountArray')[copyIndex()].tagName]",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
 			},
 			"copy": {
 				"name": "storageLoop",
@@ -825,8 +751,6 @@
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"tags": {
 				"displayName": "ClusterMasterPublicIP",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
 			},
 			"properties": {
 				"publicIPAllocationMethod": "Static",
@@ -848,8 +772,6 @@
 			},
 			"tags": {
 				"displayName": "[variables('availabilitySetArray')[copyIndex()].tagName]",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
 			},
 			"copy": {
 				"name": "availabiltySetLoop",
@@ -861,9 +783,7 @@
 			"location": "[variables('location')]",
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"tags": {
-				"displayName": "clusterMasterLB",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
+				"displayName": "clusterMasterLB"
 			},
 			"dependsOn": [
 				"[concat('Microsoft.Network/publicIPAddresses/', variables('clusterMasterPublicIpDnsLabel'))]"
@@ -963,9 +883,7 @@
 			"location": "[variables('location')]",
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"tags": {
-				"displayName": "ClusterMasterNetworkInterface",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
+				"displayName": "ClusterMasterNetworkInterface"
 			},
 			"dependsOn": [
 				"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
@@ -1005,9 +923,7 @@
 			"location": "[variables('location')]",
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"tags": {
-				"displayName": "ClusterNodeNetworkInterfaces",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
+				"displayName": "ClusterNodeNetworkInterfaces"
 			},
 			"dependsOn": [
 				"[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
@@ -1108,9 +1024,6 @@
 					"imageReference": {
 						"value": "[variables('imageReference')]"
 					},
-					"appTags": {
-						"value": "[variables('appTags')]"
-					}
 				}
 			}
 		}, {
@@ -1190,9 +1103,6 @@
 					"imageReference": {
 						"value": "[variables('imageReference')]"
 					},
-					"appTags": {
-						"value": "[variables('appTags')]"
-					}
 				}
 			}
 		}, {
@@ -1201,9 +1111,7 @@
 			"location": "[variables('location')]",
 			"apiVersion": "[variables('apiVersionCompute')]",
 			"tags": {
-				"displayName": "PrepMaster",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
+				"displayName": "PrepMaster"
 			},
 			"dependsOn": [
 				"[concat('masterVmDeployment', copyindex())]"
@@ -1233,8 +1141,6 @@
 			"apiVersion": "[variables('apiVersionCompute')]",
 			"tags": {
 				"displayName": "PrepNodes",
-				"provider": "[variables('appTags').provider]",
-				"app": "[variables('appTags').app]"
 			},
 			"dependsOn": [
 				"[concat('nodeVmDeployment', copyindex())]"
@@ -1344,9 +1250,6 @@
 					},
 					"subDomainChosen": {
 						"value": "[concat(parameters('defaultSubDomainType'), 'Domain')]"
-					},
-					"appTags": {
-						"value": "[variables('appTags')]"
 					},
 					"sshPrivateKey": {
 						"reference": {

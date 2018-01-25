@@ -172,12 +172,6 @@
 				"description": "Subdomain chosen for application routing"
 			}
 		},
-		"redHatTags": {
-			"type": "object",
-			"metadata": {
-				"description": "Red Hat Tags"
-			}
-		},
 		"sshPrivateKey": {
 			"type": "securestring",
 			"minLength": 1,
@@ -199,9 +193,7 @@
 		"location": "[resourceGroup().location]",
 		"apiVersion": "[parameters('apiVersionCompute')]",
 		"tags": {
-			"displayName": "DeployCluster",
-			"provider": "[parameters('redHatTags').provider]",
-			"app": "[parameters('redHatTags').app]"
+			"displayName": "DeployCluster"
 		},
 		"properties": {
 			"publisher": "Microsoft.Azure.Extensions",

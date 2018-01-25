@@ -122,12 +122,6 @@
 			"metadata": {
 				"description": "Image Reference"
 			}
-		},
-		"redHatTags": {
-			"type": "object",
-			"metadata": {
-				"description": "Red Hat Tags"
-			}
 		}
 	},
 	"variables": {
@@ -182,9 +176,7 @@
 		"location": "[parameters('location')]",
 		"apiVersion": "[parameters('apiVersionCompute')]",
 		"tags": {
-			"Role": "[parameters('role')]",
-			"provider": "[parameters('redHatTags').provider]",
-			"app": "[parameters('redHatTags').app]"
+			"Role": "[parameters('role')]"
 		},
 		"properties": {
 			"availabilitySet": {
