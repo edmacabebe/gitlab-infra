@@ -269,7 +269,7 @@
 			{ "name": "[variables('diagStorageAccount1')]", "tagName": "DiagnosticsStorageAccount", "skuName": "[variables('storageSkuObject').diagnostics.skuName]", "skuTier": "[variables('storageSkuObject').diagnostics.skuTier]" },
 			{ "name": "[variables('diagStorageAccount2')]", "tagName": "DiagnosticsStorageAccount", "skuName": "[variables('storageSkuObject').diagnostics.skuName]", "skuTier": "[variables('storageSkuObject').diagnostics.skuTier]" },
 			{ "name": "[variables('newStorageAccountRegistry')]", "tagName": "RegistryStorageAccount", "skuName": "[variables('storageSkuObject').registry.skuName]", "skuTier": "[variables('storageSkuObject').registry.skuTier]" },
-			{ "name": "[variables('newStorageAccountMaster')]", "tagName": "MasterStorageAccount", "skuName": "[variables('storageSkuObject').master.skuName]", "skuTier": "[variables('storageSkuObject').master.skuTier]" }
+			{ "name": "[variables('newStorageAccountMaster')]", "tagName": "MasterStorageAccount", "skuName": "[variables('storageSkuObject').master.skuName]", "skuTier": "[variables('storageSkuObject').master.skuTier]" },
 			{ "name": "[variables('newStorageAccountNodeOs')]", "tagName": "NodeStorageAccount", "skuName": "[variables('storageSkuObject').node.skuName]", "skuTier": "[variables('storageSkuObject').node.skuTier]" },
 			{ "name": "[variables('newStorageAccountNodeData')]", "tagName": "NodeStorageAccount", "skuName": "[variables('storageSkuObject').node.skuName]", "skuTier": "[variables('storageSkuObject').node.skuTier]" },
 			{ "name": "[variables('newStorageAccountPersistentVolume1')]", "tagName": "PersistentVolume1StorageAccount", "skuName": "[variables('storageSkuObject').persistent.skuName]", "skuTier": "[variables('storageSkuObject').persistent.skuTier]" }
