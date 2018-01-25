@@ -258,9 +258,7 @@
 		"namingInfix": "[toLower(parameters('appClusterPrefix'))]",
 		"clusterMasterHostname": "[concat(variables('namingInfix'), '-master')]",
 		"clusterNodeHostname": "[concat(variables('namingInfix'), '-node')]",
-		"clusterInfraHostname": "[concat(variables('namingInfix'), '-infra')]",
 		"newStorageAccountMaster": "[concat('master', uniqueString(concat(resourceGroup().id, 'msa')))]",
-		"newStorageAccountInfra": "[concat('infra', uniqueString(concat(resourceGroup().id, 'infra')))]",
 		"newStorageAccountNodeOs": "[concat('nodeos', uniqueString(concat(resourceGroup().id, 'nodeossa')))]",
 		"newStorageAccountNodeData": "[concat('nodedata', uniqueString(concat(resourceGroup().id, 'nodedatasa')))]",
 		"diagStorageAccount1": "[concat('diag1', uniqueString(concat(resourceGroup().id, 'dsa1')))]",
@@ -271,15 +269,13 @@
 			{ "name": "[variables('diagStorageAccount1')]", "tagName": "DiagnosticsStorageAccount", "skuName": "[variables('storageSkuObject').diagnostics.skuName]", "skuTier": "[variables('storageSkuObject').diagnostics.skuTier]" },
 			{ "name": "[variables('diagStorageAccount2')]", "tagName": "DiagnosticsStorageAccount", "skuName": "[variables('storageSkuObject').diagnostics.skuName]", "skuTier": "[variables('storageSkuObject').diagnostics.skuTier]" },
 			{ "name": "[variables('newStorageAccountRegistry')]", "tagName": "RegistryStorageAccount", "skuName": "[variables('storageSkuObject').registry.skuName]", "skuTier": "[variables('storageSkuObject').registry.skuTier]" },
-			{ "name": "[variables('newStorageAccountMaster')]", "tagName": "MasterStorageAccount", "skuName": "[variables('storageSkuObject').master.skuName]", "skuTier": "[variables('storageSkuObject').master.skuTier]" },
-			{ "name": "[variables('newStorageAccountInfra')]", "tagName": "InfraStorageAccount", "skuName": "[variables('storageSkuObject').infra.skuName]", "skuTier": "[variables('storageSkuObject').infra.skuTier]" },
+			{ "name": "[variables('newStorageAccountMaster')]", "tagName": "MasterStorageAccount", "skuName": "[variables('storageSkuObject').master.skuName]", "skuTier": "[variables('storageSkuObject').master.skuTier]" }
 			{ "name": "[variables('newStorageAccountNodeOs')]", "tagName": "NodeStorageAccount", "skuName": "[variables('storageSkuObject').node.skuName]", "skuTier": "[variables('storageSkuObject').node.skuTier]" },
 			{ "name": "[variables('newStorageAccountNodeData')]", "tagName": "NodeStorageAccount", "skuName": "[variables('storageSkuObject').node.skuName]", "skuTier": "[variables('storageSkuObject').node.skuTier]" },
 			{ "name": "[variables('newStorageAccountPersistentVolume1')]", "tagName": "PersistentVolume1StorageAccount", "skuName": "[variables('storageSkuObject').persistent.skuName]", "skuTier": "[variables('storageSkuObject').persistent.skuTier]" }
 		],
 		"availabilitySetArray": [
 			{ "name": "masteravailabilityset", "tagName": "MasterAvailabilitySet" },
-			{ "name": "infraavailabilityset", "tagName": "InfraAvailabilitySet" },
 			{ "name": "nodeavailabilityset", "tagName": "NodeAvailabilitySet" }
 		],
 		"unmanagedAvailabilitySetSku": "Classic",
@@ -292,10 +288,6 @@
 			"master": {
 				"skuName": "[variables('vmSizesMap')[parameters('masterVmSize')].storageAccountType]",
 				"skuTier": "[variables('vmSizesMap')[parameters('masterVmSize')].storageAccountTier]"
-			},
-			"infra": {
-				"skuName": "[variables('vmSizesMap')[parameters('infraVmSize')].storageAccountType]",
-				"skuTier": "[variables('vmSizesMap')[parameters('infraVmSize')].storageAccountTier]"
 			},
 			"node": {
 				"skuName": "[variables('vmSizesMap')[parameters('nodeVmSize')].storageAccountType]",
@@ -319,14 +311,11 @@
 		"storageLoopCount": "[concat(parameters('storageKind'), 'StorageCount')]",
 		"unmanagedMasterUri": "[variables('newStorageAccountMaster')]",
 		"managedMasterUri": "[variables('diagStorageAccount1')]",
-		"unmanagedInfraUri": "[variables('newStorageAccountInfra')]",
-		"managedInfraUri": "[variables('diagStorageAccount1')]",
 		"unmanagedNodeOsUri": "[variables('newStorageAccountNodeOs')]",
 		"managedNodeOsUri": "[variables('diagStorageAccount1')]",
 		"unmanagedNodeDataUri": "[variables('newStorageAccountNodeData')]",
 		"managedNodeDataUri": "[variables('diagStorageAccount1')]",
 		"masterUri": "[concat(parameters('storageKind'), 'MasterUri')]",
-		"infraUri": "[concat(parameters('storageKind'), 'InfraUri')]",
 		"nodeOsUri": "[concat(parameters('storageKind'), 'NodeOsUri')]",
 		"nodeDataUri": "[concat(parameters('storageKind'), 'NodeDataUri')]",
 		"addressPrefix": "10.0.0.0/8",
@@ -335,7 +324,6 @@
 		"virtualNetworkName": "clustervnet",
 		"masterSubnetName": "mastersubnet",
 		"nodeSubnetName": "nodesubnet",
-		"infraLbPublicIpDnsLabel": "[concat('infradns', uniqueString(concat(resourceGroup().id, 'infra')))]",
 		"clusterMasterPublicIpDnsLabel": "[concat('masterdns', uniqueString(concat(resourceGroup().id, 'master')))]",
 
 		"masterLoadBalancerName": "[concat(variables('clusterMasterHostname'), 'lb')]",
@@ -1312,17 +1300,11 @@
 					"clusterMasterPublicIpAddress": {
 						"value": "[reference(variables('clusterMasterPublicIpDnsLabel')).ipAddress]"
 					},
-					"clusterInfraHostname": {
-						"value": "[variables('clusterInfraHostname')]"
-					},
 					"clusterNodeHostname": {
 						"value": "[variables('clusterNodeHostname')]"
 					},
 					"masterInstanceCount": {
 						"value": "[parameters('masterInstanceCount')]"
-					},
-					"infraInstanceCount": {
-						"value": "[parameters('infraInstanceCount')]"
 					},
 					"nodeInstanceCount": {
 						"value": "[parameters('nodeInstanceCount')]"
@@ -1355,7 +1337,7 @@
 						"value": "[parameters('aadClientSecret')]"
 					},
 					"nipioDomain": {
-						"value": "[concat(reference(variables('infraLbPublicIpDnsLabel')).ipAddress, '.nip.io')]"
+						"value": "[concat(reference(variables('masterLbPublicIpDnsLabel')).ipAddress, '.nip.io')]"
 					},
 					"customDomain": {
 						"value": "[variables('defaultSubDomain')]"
