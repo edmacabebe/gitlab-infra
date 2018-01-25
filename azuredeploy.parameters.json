@@ -14,7 +14,7 @@
 		"storageKind": {
 			"value": "changeme"
 		},
-		"openshiftClusterPrefix": {
+		"appClusterPrefix": {
 			"value": "changeme"
 		},
 		"masterInstanceCount": {

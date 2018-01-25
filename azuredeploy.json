@@ -818,38 +818,12 @@
 							"id": "[variables('masterLb8443ProbeId')]"
 						}
 					}
-				}, {
-					"name": "CockpitConsole",
-					"properties": {
-						"frontendIPConfiguration": {
-							"id": "[variables('masterLbFrontEndConfigId')]"
-						},
-						"backendAddressPool": {
-							"id": "[variables('masterLbBackendPoolId')]"
-						},
-						"protocol": "Tcp",
-						"loadDistribution": "SourceIP",
-						"idleTimeoutInMinutes": 30,
-						"frontendPort": 9090,
-						"backendPort": 9090,
-						"probe": {
-							"id": "[variables('masterLbCockpitProbeId')]"
-						}
-					}
 				}],
 				"probes": [{
 					"name": "8443Probe",
 					"properties": {
 						"protocol": "Tcp",
 						"port": 8443,
-						"intervalInSeconds": 5,
-						"numberOfProbes": 2
-					}
-				}, {
-					"name": "cockpitProbe",
-					"properties": {
-						"protocol": "Tcp",
-						"port": 9090,
 						"intervalInSeconds": 5,
 						"numberOfProbes": 2
 					}
@@ -1224,15 +1198,6 @@
 					"clusterPassword": {
 						"value": "[parameters('clusterPassword')]"
 					},
-					"enableMetrics": {
-						"value": "[parameters('enableMetrics')]"
-					},
-					"enableLogging": {
-						"value": "[parameters('enableLogging')]"
-					},
-					"enableCockpit": {
-						"value": "[parameters('enableCockpit')]"
-					},
 					"enableAzure": {
 						"value": "[parameters('enableAzure')]"
 					},
@@ -1241,9 +1206,6 @@
 					},
 					"aadClientSecret": {
 						"value": "[parameters('aadClientSecret')]"
-					},
-					"nipioDomain": {
-						"value": "[concat(reference(variables('clusterMasterPublicIpDnsLabel')).ipAddress, '.nip.io')]"
 					},
 					"customDomain": {
 						"value": "[variables('defaultSubDomain')]"
@@ -1264,10 +1226,6 @@
 		}
 	],
 	"outputs": {
-		"App Console Url": {
-			"type": "string",
-			"value": "[concat('https://', reference(variables('clusterMasterPublicIpDnsLabel')).dnsSettings.fqdn, ':8443/console')]"
-		},
 		"Cluster Master SSH": {
 			"type": "string",
 			"value": "[concat('ssh -p 2200', parameters('adminUsername'), '@', reference(variables('clusterMasterPublicIpDnsLabel')).dnsSettings.fqdn)]"
