@@ -1337,7 +1337,7 @@
 						"value": "[parameters('aadClientSecret')]"
 					},
 					"nipioDomain": {
-						"value": "[concat(reference(variables('masterLbPublicIpDnsLabel')).ipAddress, '.nip.io')]"
+						"value": "[concat(reference(variables('clusterMasterPublicIpDnsLabel')).ipAddress, '.nip.io')]"
 					},
 					"customDomain": {
 						"value": "[variables('defaultSubDomain')]"
