@@ -1,0 +1,222 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"_artifactsLocation": {
+			"type": "string",
+			"metadata": {
+				"description": "The base URL where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+			}
+		},
+		"apiVersionCompute": {
+			"type": "string",
+			"metadata": {
+				"description": "API version for compute resources"
+			}
+		},
+		"clusterDeploymentScriptUrl": {
+			"type": "string",
+			"metadata": {
+				"description": "Bastion prep script Url"
+			}
+		},
+		"clusterDeploymentScriptFileName": {
+			"type": "string",
+			"metadata": {
+				"description": "Bastion prep script file name"
+			}
+		},
+		"newStorageAccountRegistry": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Storage Account for Docker Registry"
+			}
+		},
+		"newStorageAccountKey": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Storage Account Key for Docker Registry"
+			}
+		},
+		"clusterMasterHostname": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Cluster Master hostname"
+			}
+		},
+		"clusterMasterPublicIpFqdn": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Cluster Master VM public IP fully qualified domain name"
+			}
+		},
+		"clusterMasterPublicIpAddress": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Cluster Master VM public IP address"
+			}
+		},
+		"clusterInfraHostname": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Cluster Infra Node hostname"
+			}
+		},
+		"clusterNodeHostname": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Cluster Worker/slave Node hostname"
+			}
+		},
+		"masterInstanceCount": {
+			"type": "int",
+			"minValue": 1,
+			"metadata": {
+				"description": "Number of Cluster Master nodes"
+			}
+		},
+		"infraInstanceCount": {
+			"type": "int",
+			"minValue": 0,
+			"metadata": {
+				"description": "Number of Cluster Infra nodes"
+			}
+		},
+		"nodeInstanceCount": {
+			"type": "int",
+			"minValue": 2,
+			"metadata": {
+				"description": "Number of Cluster worker/slave nodes"
+			}
+		},
+		"storageKind": {
+			"type": "string",
+			"metadata": {
+				"description": "Managed or unmanaged disk"
+			}
+		},
+		"adminUsername": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Administrator username on all VMs"
+			}
+		},
+		"clusterPassword": {
+			"type": "securestring",
+			"minLength": 1,
+			"metadata": {
+				"description": "Administrator password for Cluster Console"
+			}
+		},
+		"enableMetrics": {
+			"type": "string",
+			"metadata": {
+				"description": "Enable Cluster Metrics: true or false"
+			}
+		},
+		"enableLogging": {
+			"type": "string",
+			"metadata": {
+				"description": "Enable Cluster Logging: true or false"
+			}
+		},
+		"enableCockpit": {
+			"type": "string",
+			"metadata": {
+				"description": "Enable Cockpit: true or false"
+			}
+		},
+		"enableAzure": {
+			"type": "string",
+			"metadata": {
+				"description": "Enable Azure: true or false"
+			}
+		},
+		"aadClientId": {
+			"type": "string",
+			"minLength": 1,
+			"metadata": {
+				"description": "Azure AD Client ID"
+			}
+		},
+		"aadClientSecret": {
+			"type": "securestring",
+			"minLength": 1,
+			"metadata": {
+				"description": "Azure AD Client Secret"
+			}
+		},
+		"nipioDomain": {
+			"type": "string",
+			"metadata": {
+				"description": "Nip.io Subdomain for application routing"
+			}
+		},
+		"customDomain": {
+			"type": "string",
+			"metadata": {
+				"description": "custom Subdomain for application routing"
+			}
+		},
+		"subDomainChosen": {
+			"type": "string",
+			"metadata": {
+				"description": "Subdomain chosen for application routing"
+			}
+		},
+		"redHatTags": {
+			"type": "object",
+			"metadata": {
+				"description": "Red Hat Tags"
+			}
+		},
+		"sshPrivateKey": {
+			"type": "securestring",
+			"minLength": 1,
+			"metadata": {
+				"description": "SSH private key for deploying CICD Cluster tools"
+			}
+		}
+	},
+	"variables": {
+		"singlequote": "'",
+		"tenantId": "[subscription().tenantId]",
+		"subscriptionId": "[subscription().subscriptionId]",
+		"location": "[resourceGroup().location]",
+		"resourceGroupName": "[resourceGroup().name]",
+	},
+	"resources": [{
+		"type": "Microsoft.Compute/virtualMachines/extensions",
+		"name": "[concat(parameters('clusterMasterHostname'), '-0/deployCluster')]",
+		"location": "[resourceGroup().location]",
+		"apiVersion": "[parameters('apiVersionCompute')]",
+		"tags": {
+			"displayName": "DeployCluster",
+			"provider": "[parameters('redHatTags').provider]",
+			"app": "[parameters('redHatTags').app]"
+		},
+		"properties": {
+			"publisher": "Microsoft.Azure.Extensions",
+			"type": "CustomScript",
+			"typeHandlerVersion": "2.0",
+			"autoUpgradeMinorVersion": true,
+			"settings": {
+				"fileUris": [
+					"[parameters('clusterDeploymentScriptUrl')]"
+				]
+			},
+			"protectedSettings": {
+				"commandToExecute": "[concat('bash ', parameters('clusterDeploymentScriptFileName'), ' \"', parameters('adminUsername'), '\" ', variables('singlequote'), parameters('clusterPassword'), variables('singlequote'), ' \"', parameters('sshPrivateKey'), '\" \"', parameters('clusterMasterHostname'), '\" \"', parameters('clusterMasterPublicIpFqdn'), '\" \"', parameters('clusterMasterPublicIpAddress'), '\" \"', parameters('clusterInfraHostname'), '\" \"', parameters('clusterNodeHostname'), '\" \"', parameters('nodeInstanceCount'), '\" \"', parameters('infraInstanceCount'), '\" \"', parameters('MasterInstanceCount'), '\" \"', parameters(parameters('subDomainChosen')), '\" \"', parameters('newStorageAccountRegistry'), '\" ', variables('singlequote'), parameters('newStorageAccountKey'), variables('singlequote'), ' ', variables('singlequote'), variables('tenantId'), variables('singlequote'), ' ', variables('singlequote'), variables('subscriptionId'), variables('singlequote'), ' ', variables('singlequote'), parameters('aadClientId'), variables('singlequote'), ' ', variables('singlequote'), parameters('aadClientSecret'), variables('singlequote'), ' ', variables('singlequote'), variables('resourceGroupName'), variables('singlequote'), ' ', variables('singlequote'), variables('location'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableMetrics'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableLogging'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableCockpit'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableAzure'), variables('singlequote'), ' ', variables('singlequote'), parameters('storageKind'), variables('singlequote'))]"
+			}
+		}
+	}],
+	"outputs": {}
+}
