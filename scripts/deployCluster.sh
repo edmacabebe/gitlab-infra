@@ -10,32 +10,32 @@ export PRIVATEKEY=$3
 export MASTER=$4
 export MASTERPUBLICIPHOSTNAME=$5
 export MASTERPUBLICIPADDRESS=$6
-export INFRA=$7
-export NODE=$8
-export NODECOUNT=$9
-export INFRACOUNT=${10}
-export MASTERCOUNT=${11}
-export ROUTING=${12}
-export REGISTRYSA=${13}
-export ACCOUNTKEY="${14}"
-export TENANTID=${15}
-export SUBSCRIPTIONID=${16}
-export AADCLIENTID=${17}
-export AADCLIENTSECRET="${18}"
-export RESOURCEGROUP=${19}
-export LOCATION=${20}
-export METRICS=${21}
-export LOGGING=${22}
-export COCKPIT=${23}
-export AZURE=${24}
-export STORAGEKIND=${25}
+#export INFRA=$7
+export NODE=$7
+export NODECOUNT=$8
+#export INFRACOUNT=${9}
+export MASTERCOUNT=${9}
+export ROUTING=${10}
+export REGISTRYSA=${11}
+export ACCOUNTKEY="${12}"
+export TENANTID=${13}
+export SUBSCRIPTIONID=${14}
+export AADCLIENTID=${15}
+export AADCLIENTSECRET="${16}"
+export RESOURCEGROUP=${17}
+export LOCATION=${18}
+export METRICS=${19}
+export LOGGING=${20}
+export COCKPIT=${21}
+export AZURE=${22}
+export STORAGEKIND=${23}
 
 # Determine if Commercial Azure or Azure Government
 CLOUD=$( curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/location?api-version=2017-04-02&format=text" | cut -c 1-2 )
 export CLOUD=${CLOUD^^}
 
 export MASTERLOOP=$((MASTERCOUNT - 1))
-export INFRALOOP=$((INFRACOUNT - 1))
+#export INFRALOOP=$((INFRACOUNT - 1))
 export NODELOOP=$((NODECOUNT - 1))
 
 # Generate private keys for use by Ansible
@@ -188,7 +188,7 @@ cat > /home/${SUDOUSER}/reboot-nodes.yml <<EOF
   become_method: sudo
   tasks:
   - name: Reboot infra and app nodes
-    shell: (/bin/sleep 5 ; shutdown -r now "OpenShift configurations required reboot" ) &
+    shell: (/bin/sleep 5 ; shutdown -r now "Cluster configurations required reboot" ) &
     async: 30
     poll: 0
     ignore_errors: true
@@ -428,8 +428,8 @@ openshift_cloudprovider_kind=azure
 osm_default_node_selector='type=app'
 openshift_disable_check=disk_availability,memory_availability
 # default selectors for router and registry services
-openshift_router_selector='type=infra'
-openshift_registry_selector='type=infra'
+#openshift_router_selector='type=infra'
+#openshift_registry_selector='type=infra'
 
 openshift_master_cluster_method=native
 openshift_master_cluster_hostname=$MASTERPUBLICIPHOSTNAME
@@ -453,21 +453,21 @@ openshift_metrics_install_metrics=false
 #openshift_metrics_cassandra_storage_type=dynamic
 openshift_metrics_start_cluster=true
 openshift_metrics_startup_timeout=120
-openshift_metrics_hawkular_nodeselector={"type":"infra"}
-openshift_metrics_cassandra_nodeselector={"type":"infra"}
-openshift_metrics_heapster_nodeselector={"type":"infra"}
-openshift_hosted_metrics_public_url=https://metrics.$ROUTING/hawkular/metrics
+#openshift_metrics_hawkular_nodeselector={"type":"infra"}
+#openshift_metrics_cassandra_nodeselector={"type":"infra"}
+#openshift_metrics_heapster_nodeselector={"type":"infra"}
+#openshift_hosted_metrics_public_url=https://metrics.$ROUTING/hawkular/metrics
 
 # Setup logging
 openshift_logging_install_logging=false
 #openshift_logging_es_pvc_dynamic=true
 openshift_logging_es_pvc_storage_class_name=generic
 openshift_logging_fluentd_nodeselector={"logging":"true"}
-openshift_logging_es_nodeselector={"type":"infra"}
-openshift_logging_kibana_nodeselector={"type":"infra"}
-openshift_logging_curator_nodeselector={"type":"infra"}
-openshift_master_logging_public_url=https://kibana.$ROUTING
-openshift_logging_master_public_url=https://$MASTERPUBLICIPHOSTNAME:8443
+#openshift_logging_es_nodeselector={"type":"infra"}
+#openshift_logging_kibana_nodeselector={"type":"infra"}
+#openshift_logging_curator_nodeselector={"type":"infra"}
+#openshift_master_logging_public_url=https://kibana.$ROUTING
+#openshift_logging_master_public_url=https://$MASTERPUBLICIPHOSTNAME:8443
 
 # host group for masters
 [masters]
@@ -493,10 +493,10 @@ done
 
 # Loop to add Infra Nodes
 
-for (( c=0; c<$INFRACOUNT; c++ ))
-do
-  echo "$INFRA-$c openshift_node_labels=\"{'type': 'infra', 'zone': 'default'}\" openshift_hostname=$INFRA-$c" >> /etc/ansible/hosts
-done
+#for (( c=0; c<$INFRACOUNT; c++ ))
+#do
+#  echo "$INFRA-$c openshift_node_labels=\"{'type': 'infra', 'zone': 'default'}\" openshift_hostname=$INFRA-$c" >> /etc/ansible/hosts
+#done
 
 # Loop to add Nodes
 
@@ -638,14 +638,14 @@ then
 	echo $(date) "- Sleep for 20"
 
 	sleep 20
-	runuser -l $SUDOUSER -c  "oc label nodes --all logging-infra-fluentd=true logging=true"
+	#runuser -l $SUDOUSER -c  "oc label nodes --all logging-infra-fluentd=true logging=true"
 
 	runuser -l $SUDOUSER -c  "ansible all -b  -m service -a 'name=openvswitch state=restarted' "
 
 	echo $(date) "- Restarting origin nodes after 20 seconds    "
 	sleep 20
 
-	runuser -l $SUDOUSER -c  "ansible nodes -b  -m service -a 'name=origin-node state=restarted' "
+	runuser -l $SUDOUSER -c  "ansible nodes -b  -m service -a 'name=app-node state=restarted' "
 
 fi
 

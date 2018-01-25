@@ -20,9 +20,6 @@
 		"masterInstanceCount": {
 			"value": 3
 		},
-		"infraInstanceCount": {
-			"value": 2
-		},
 		"nodeInstanceCount": {
 			"value": 1
 		},

@@ -607,7 +607,7 @@
 			"name": "[concat(variables('clusterMasterHostname'), '-nsg')]",
 			"location": "[variables('location')]",
 			"tags": {
-				"displayName": "MasterNSG",
+				"displayName": "MasterNSG"
 			},
 			"properties": {
 				"securityRules": [{
@@ -657,7 +657,7 @@
 			"name": "[concat(variables('clusterNodeHostname'), '-nsg')]",
 			"location": "[variables('location')]",
 			"tags": {
-				"displayName": "NodeNSG",
+				"displayName": "NodeNSG"
 			},
 			"properties": {
 				"securityRules": [{
@@ -706,7 +706,7 @@
 			"name": "[variables('virtualNetworkName')]",
 			"location": "[variables('location')]",
 			"tags": {
-				"displayName": "VirtualNetwork",
+				"displayName": "VirtualNetwork"
 			},
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"properties": {
@@ -734,7 +734,7 @@
 			"kind": "Storage",
 			"apiVersion": "[variables('apiVersionStorage')]",
 			"tags": {
-				"displayName": "[variables('newStorageAccountArray')[copyIndex()].tagName]",
+				"displayName": "[variables('newStorageAccountArray')[copyIndex()].tagName]"
 			},
 			"copy": {
 				"name": "storageLoop",
@@ -750,7 +750,7 @@
 			"location": "[variables('location')]",
 			"apiVersion": "[variables('apiVersionNetwork')]",
 			"tags": {
-				"displayName": "ClusterMasterPublicIP",
+				"displayName": "ClusterMasterPublicIP"
 			},
 			"properties": {
 				"publicIPAllocationMethod": "Static",
@@ -771,7 +771,7 @@
                 "platformUpdateDomainCount": "5"
 			},
 			"tags": {
-				"displayName": "[variables('availabilitySetArray')[copyIndex()].tagName]",
+				"displayName": "[variables('availabilitySetArray')[copyIndex()].tagName]"
 			},
 			"copy": {
 				"name": "availabiltySetLoop",
@@ -1140,7 +1140,7 @@
 			"location": "[variables('location')]",
 			"apiVersion": "[variables('apiVersionCompute')]",
 			"tags": {
-				"displayName": "PrepNodes",
+				"displayName": "PrepNodes"
 			},
 			"dependsOn": [
 				"[concat('nodeVmDeployment', copyindex())]"

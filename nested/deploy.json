@@ -61,13 +61,6 @@
 				"description": "Cluster Master VM public IP address"
 			}
 		},
-		"clusterInfraHostname": {
-			"type": "string",
-			"minLength": 1,
-			"metadata": {
-				"description": "Cluster Infra Node hostname"
-			}
-		},
 		"clusterNodeHostname": {
 			"type": "string",
 			"minLength": 1,
@@ -80,13 +73,6 @@
 			"minValue": 1,
 			"metadata": {
 				"description": "Number of Cluster Master nodes"
-			}
-		},
-		"infraInstanceCount": {
-			"type": "int",
-			"minValue": 0,
-			"metadata": {
-				"description": "Number of Cluster Infra nodes"
 			}
 		},
 		"nodeInstanceCount": {
@@ -206,7 +192,7 @@
 				]
 			},
 			"protectedSettings": {
-				"commandToExecute": "[concat('bash ', parameters('clusterDeploymentScriptFileName'), ' \"', parameters('adminUsername'), '\" ', variables('singlequote'), parameters('clusterPassword'), variables('singlequote'), ' \"', parameters('sshPrivateKey'), '\" \"', parameters('clusterMasterHostname'), '\" \"', parameters('clusterMasterPublicIpFqdn'), '\" \"', parameters('clusterMasterPublicIpAddress'), '\" \"', parameters('clusterInfraHostname'), '\" \"', parameters('clusterNodeHostname'), '\" \"', parameters('nodeInstanceCount'), '\" \"', parameters('infraInstanceCount'), '\" \"', parameters('MasterInstanceCount'), '\" \"', parameters(parameters('subDomainChosen')), '\" \"', parameters('newStorageAccountRegistry'), '\" ', variables('singlequote'), parameters('newStorageAccountKey'), variables('singlequote'), ' ', variables('singlequote'), variables('tenantId'), variables('singlequote'), ' ', variables('singlequote'), variables('subscriptionId'), variables('singlequote'), ' ', variables('singlequote'), parameters('aadClientId'), variables('singlequote'), ' ', variables('singlequote'), parameters('aadClientSecret'), variables('singlequote'), ' ', variables('singlequote'), variables('resourceGroupName'), variables('singlequote'), ' ', variables('singlequote'), variables('location'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableMetrics'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableLogging'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableCockpit'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableAzure'), variables('singlequote'), ' ', variables('singlequote'), parameters('storageKind'), variables('singlequote'))]"
+				"commandToExecute": "[concat('bash ', parameters('clusterDeploymentScriptFileName'), ' \"', parameters('adminUsername'), '\" ', variables('singlequote'), parameters('clusterPassword'), variables('singlequote'), ' \"', parameters('sshPrivateKey'), '\" \"', parameters('clusterMasterHostname'), '\" \"', parameters('clusterMasterPublicIpFqdn'), '\" \"', parameters('clusterMasterPublicIpAddress'), '\" \"', parameters('clusterNodeHostname'), '\" \"', parameters('nodeInstanceCount'), '\" \"', parameters('MasterInstanceCount'), '\" \"', parameters(parameters('subDomainChosen')), '\" \"', parameters('newStorageAccountRegistry'), '\" ', variables('singlequote'), parameters('newStorageAccountKey'), variables('singlequote'), ' ', variables('singlequote'), variables('tenantId'), variables('singlequote'), ' ', variables('singlequote'), variables('subscriptionId'), variables('singlequote'), ' ', variables('singlequote'), parameters('aadClientId'), variables('singlequote'), ' ', variables('singlequote'), parameters('aadClientSecret'), variables('singlequote'), ' ', variables('singlequote'), variables('resourceGroupName'), variables('singlequote'), ' ', variables('singlequote'), variables('location'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableMetrics'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableLogging'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableCockpit'), variables('singlequote'), ' ', variables('singlequote'), parameters('enableAzure'), variables('singlequote'), ' ', variables('singlequote'), parameters('storageKind'), variables('singlequote'))]"
 			}
 		}
 	}],
